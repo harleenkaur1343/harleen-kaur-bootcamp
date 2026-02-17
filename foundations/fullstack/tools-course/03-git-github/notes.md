@@ -6,9 +6,9 @@
 
 ## Setting up SSH
     
-    SSH (Secure Shell) keys used to establish encrypted tunnel for communication between 2 machines. So in here by setting up ssh for your account you prove your identity to github for performing ops. (Without using passwords).
+SSH (Secure Shell) keys used to establish encrypted tunnel for communication between 2 machines. So in here by setting up ssh for your account you prove your identity to github for performing ops. (Without using passwords).
     
-    Works on Asymmetric Cryptography. Public key - encrypt, private key - decrypt 
+Works on Asymmetric Cryptography. Public key - encrypt, private key - decrypt 
     
     **Steps to setup:** 
     
