@@ -6,9 +6,9 @@
 
 ## Setting up SSH
     
-SSH (Secure Shell) keys used to establish encrypted tunnel for communication between 2 machines. So in here by setting up ssh for your account you prove your identity to github for performing ops. (Without using passwords).
+SSH (Secure Shell) keys used to establish encrypted tunnel for communication between 2 machines. So in here by setting up ssh for your account you prove your identity to github for performing operations. (Without using passwords).
     
-Works on Asymmetric Cryptography. Public key - encrypt, private key - decrypt 
+Works on Asymmetric Cryptography. Public key - encrypts and private key - decrypt 
     
 **Steps to setup:** 
 
@@ -26,7 +26,7 @@ ls ~/.ssh
         ```
         
     - Passphrase is optional.
-    - ed25519 - is the algorithm for creating the keys. ED Edwards-curve Digital Signature Algorithm. 25519 - elliptic curve. Small key size and faster
+    - ed25519 - is the algorithm for creating the keys. ED is Edwards-curve Digital Signature Algorithm. 25519 - elliptic curve. Small key size and faster
     - Start the ssh agent
         
         ```markdown
