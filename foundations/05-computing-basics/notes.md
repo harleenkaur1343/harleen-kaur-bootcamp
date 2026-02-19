@@ -117,3 +117,46 @@ D - Uninterrupted sleep - Waiting for disk (I/O)
 T - Stopped - paused
 
 Z - Zombie - Dead but not cleared
+
+## orts
+
+Logical communication endpoint managed by OS to route the network traffic to a specific process
+
+0 - 65535
+
+0 - 1023  - Well known (80, 443,22)
+
+1024 - 49151 - Registered (apps)
+
+49152 - 65535 - temporary client ports 
+
+Your laptop IP:3000 recieved a request 
+
+- network card received data
+- Linux kernel read port number
+- mapped to process
+    
+        
+    
+## Users and groups
+- **Users** - who can use the system, run processes, modify files, have permissions 
+    
+    - root - (Superuser) - all accesses, UID = 0
+    - harleen (logged in user)
+    - All users have id - check by typing id in terminal
+    uid=1000(harleen) gid=1000(harleen) groups=1000(harleen),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),122(lpadmin),135(lxd),136(sambashare)
+    - Add a user - sudo adduser rami
+    - Present in /etc/passwd in format
+        - username : password : UID : GID : comment : home_dir : shell
+        - cut (extract cols) -d: (delimeter) -f1 (pick col1) from file passwd
+        
+        ```markdown
+        cut -d: f1,3 passwd (col 1 and 3)
+        ```
+        
+
+- Groups
+    - Collection of user for shared access - dev group
+    - Groups in etc/group
+    - Add: sudo groupadd devs
+    - Add member to group: sudo usermod -aG (append to group) devs harleen
