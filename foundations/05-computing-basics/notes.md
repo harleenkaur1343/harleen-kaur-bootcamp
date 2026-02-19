@@ -16,6 +16,13 @@
 ## Permissions change
 - Removed the execute permission for a directory newfolder - Showed permissions denied on cd newfolder
 
+## Error on port already in use
+  ```markdown
+  File "/usr/lib/python3.10/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address) OSError: [Errno 98] Address already in use
+    ```
+
+
 ## File permissions
 - Permissions model
     - User | Group | Others
