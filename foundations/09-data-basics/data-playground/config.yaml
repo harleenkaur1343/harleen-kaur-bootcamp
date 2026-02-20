@@ -2,3 +2,6 @@ person:
   name: Avneet
   age: 23
   state: Punjab
+  cities: 
+    - Ludhiana
+    - Mohali
