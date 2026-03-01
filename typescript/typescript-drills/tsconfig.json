@@ -1,3 +1,4 @@
+
 {
   "compilerOptions": {
     "target": "ES2022",
@@ -13,7 +14,14 @@
     "useDefineForClassFields": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "strictNullChecks": true,
+    "noEmitOnError": true,
+    "baseUrl": ".",
+    "paths":{
+      "@shared" : ["src/shared/index.ts"],
+      "@shared/*" : ["src/shared/*"]
+    }
   },
   "include": ["src"]
 }
