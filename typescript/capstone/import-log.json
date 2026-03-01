@@ -1,0 +1,25 @@
+{
+  "runs": [
+    {
+      "timestamp": "2026-03-01T06:30:19.055Z",
+      "file": "sample.csv",
+      "inserted": 3,
+      "skipped": 0,
+      "errors": 0
+    },
+    {
+      "timestamp": "2026-03-01T06:32:19.806Z",
+      "file": "sample.csv",
+      "inserted": 0,
+      "skipped": 3,
+      "errors": 0
+    },
+    {
+      "timestamp": "2026-03-01T06:38:13.375Z",
+      "file": "sample.csv",
+      "inserted": 0,
+      "skipped": 3,
+      "errors": 0
+    }
+  ]
+}

@@ -190,29 +190,30 @@ class BoundedCounter extends Counter {
 
 //COMPOSITION 
 class BoundCounter {
-  
+  #inner:Counter;
+  #max : number
   constructor(
-    private inner: Counter,
-    private max: number,
-  ) {}
+     inner: Counter,
+     max: number,
+  ) {this.#max = max; this.#inner = inner}
 
   increment() {
-    if (this.inner.value < this.max) {
-      this.inner.increment();
+    if (this.#inner.value < this.#max) {
+      this.#inner.increment();
     } else {
       throw new Error("Max limit reached");
     }
   }
   decrement() {
-    if (this.inner.value > 0) {
-      this.inner.decrement();
+    if (this.#inner.value > 0) {
+      this.#inner.decrement();
     } else {
       throw new Error("Cannot decrease below 0");
     }
   }
 
   get value() {
-    return this.inner.value;
+    return this.#inner.value;
   }
 }
 
