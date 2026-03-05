@@ -1,5 +1,5 @@
 {
-  "name": "node",
+  "name": "express_foundations",
   "version": "1.0.0",
   "description": "",
   "type": "module",
@@ -23,6 +23,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^25.3.3",
     "eslint": "^10.0.2",

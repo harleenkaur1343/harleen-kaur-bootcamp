@@ -37,3 +37,7 @@ function formatBytes(bytes: number): string {
 }
 
 export default router;
+
+// rssTotal memory the OS has given this process
+// heapTotalMemory V8 has reserved for JavaScript objects
+// heapUsedMemory actually used by your JS objects right now

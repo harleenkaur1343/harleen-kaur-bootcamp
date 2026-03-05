@@ -12,7 +12,7 @@ const server = app.listen(PORT, HOST, () => {
 process.on("SIGINT", () => {
   console.log("SIGINT received — shutting down gracefully...");
 
-  server.close((err) => {
+  server.close((err:any) => {
     if (err) {
       console.error("Error during shutdown:", err);
       process.exit(1);
