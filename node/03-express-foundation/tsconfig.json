@@ -11,7 +11,8 @@
     "baseUrl": ".",
     "paths": {
       "@utils/*": ["src/utils/*"]
-    }
+    },
+     "skipLibCheck":true,
   },
   "include": ["src",]
 }

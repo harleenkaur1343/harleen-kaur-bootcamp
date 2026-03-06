@@ -9,21 +9,23 @@ const server = app.listen(PORT, HOST, () => {
 });
 
 // Graceful shutdown on SIGINT (Ctrl+C)
-process.on("SIGINT", () => {
-  console.log("SIGINT received — shutting down gracefully...");
+function shutdown() {
+  console.log("Shutting down server...")
 
-  server.close((err:any) => {
-    if (err) {
-      console.error("Error during shutdown:", err);
-      process.exit(1);
-    }
-    console.log("Server closed. Goodbye!");
-    process.exit(0);
-  });
+  server.close(() => {
+    console.log("HTTP server closed")
 
-  // Force-kill if graceful shutdown takes too long
+    sqlite.close()
+    console.log("Database connection closed")
+
+    process.exit(0)
+  })
+
   setTimeout(() => {
-    console.error("Shutdown timed out — forcing exit.");
-    process.exit(1);
-  }, 10_000).unref();
-});
+    console.error("Force shutdown")
+    process.exit(1)
+  }, 10000).unref()
+}
+
+process.on("SIGINT", shutdown)
+process.on("SIGTERM", shutdown)
