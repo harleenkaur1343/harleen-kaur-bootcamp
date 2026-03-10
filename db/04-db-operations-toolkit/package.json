@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "db:create": "ts-node scripts/db/create.ts",
     "db:migrate": "ts-node scripts/db/migrate.ts",
     "db:seed": "ts-node scripts/db/seed.ts",
     "db:reset": "ts-node scripts/db/reset.ts",
     "db:backup": "ts-node scripts/db/backup.ts",
-    "db:restore": "ts-node scripts/db/restore.ts"
-  
+    "db:restore": "ts-node scripts/db/restore.ts",
+    "dev": "tsx src/index.ts",
+    "start":"node dist/index.js",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -19,15 +21,23 @@
   "packageManager": "pnpm@10.30.3",
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",
+    "@types/express": "^5.0.6",
     "@types/node": "^25.4.0",
     "@types/pg": "^8.18.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   },
   "dependencies": {
     "better-sqlite3": "^12.6.2",
     "dotenv": "^17.3.1",
+    "express": "^5.2.1",
     "pg": "^8.20.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3"
+    ]
   }
 }

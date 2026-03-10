@@ -1,4 +1,4 @@
-import { query } from "../../src/db/connection";
+import { query } from "../../src/db/connection.js";
 
 async function test() {
   const result = await query("SELECT NOW()");

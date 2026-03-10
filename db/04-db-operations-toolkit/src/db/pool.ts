@@ -7,8 +7,8 @@ export const pool = new Pool({
   user: dbConfig.user,
   password: dbConfig.password,
   database: dbConfig.database,
-  max: dbConfig.pool.max,
-  idleTimeoutMillis: dbConfig.pool.idleTimeoutMillis,
+  max: 10,
+  idleTimeoutMillis: 30000,
 });
 
 pool.on("connect", () => {

@@ -1,0 +1,19 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.dbConfig = void 0;
+const dotenv_1 = __importDefault(require("dotenv"));
+const env = process.env.NODE_ENV || "development";
+dotenv_1.default.config({
+    path: `.env.${env}`
+});
+exports.dbConfig = {
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+};
+//# sourceMappingURL=config.js.map
