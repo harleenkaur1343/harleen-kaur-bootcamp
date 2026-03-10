@@ -8,14 +8,14 @@ import * as dbOps from "../services/tasksService.js"
 export async function createTask(req: Request, res: Response, next: NextFunction) {
   try {
     const data = createTaskSchema.parse(req.body)
-
+    console.log("task data", data, req.user._id)
     const task: Task = {
       id: crypto.randomUUID(),
       title: data.title,
       description: data.description,
       completed: data.completed ?? false,
-      createdAt: new Date().toISOString(),
-      userId: req.user._id
+      created_at: new Date(),
+      user_id: req.user._id
     }
 
   const created = await dbOps.createTask(task)
@@ -38,8 +38,8 @@ const { page = "1", limit = "10", completed, sort } = req.query
     )
   }
 
-  if (sort === "createdAt") {
-    result.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+  if (sort === "created_at") {
+    result.sort((a, b) => a.created_at.localeCompare(b.created_at))
   }
 
   const p = Number(page)

@@ -1,15 +1,13 @@
-import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
+import {drizzle} from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
+import * as schema from "./schema.js";
 
-const sqlite = new Database("sqlite.db");
+export const pool = new Pool({
+  connectionString : process.env.DATABASE_URL
+})
 
-const db = drizzle(sqlite);
+export const db = drizzle(pool, {schema});
 
-export function closeDb() {
-  sqlite.close();
-  console.log("Database connection closed");
+export async function closeDb(){
+  await pool.end();
 }
-
-export default db;
-//It creates a connection to a SQLite database file (sqlite.db) and
-// wraps it with Drizzle ORM so you can use type‑safe SQL queries in your app.

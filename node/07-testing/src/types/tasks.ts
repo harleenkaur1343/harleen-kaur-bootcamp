@@ -3,8 +3,8 @@ export type Task = {
   title: string
   description?: string
   completed: boolean
-  createdAt: string,
-  userId: number
+  created_at: Date,
+  user_id: number | null | undefined
 }
 
 

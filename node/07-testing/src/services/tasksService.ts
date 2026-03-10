@@ -1,4 +1,4 @@
-import  db  from "../db/index.js";
+import  {db}  from "../db/index.js";
 import { tasks } from "../db/schema.js";
 import { eq } from "drizzle-orm";
 import { Task } from "../types/tasks.js"
@@ -11,7 +11,7 @@ export async function getTasks(user: any) {
   return db
     .select()
     .from(tasks)
-    .where(eq(tasks.userId, user._id));
+    .where(eq(tasks.user_id, user._id));
 }
 
 export async function createTask(task: Task) {

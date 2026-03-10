@@ -1,5 +1,4 @@
-import { db, sqlite } from "./index.js"
-import { users, tasks } from "./schema.js"
+import db, {sqlite } from "./index.js"
 
 async function init() {
   console.log("Initializing database...")

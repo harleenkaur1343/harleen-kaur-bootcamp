@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken"
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret"
 
-export function generateToken(payload: { userId: number; role: string }) {
+export function generateToken(payload: { _id: number; role: string }) {
   return jwt.sign(payload, JWT_SECRET, {
     expiresIn: "1h"
   })

@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt"
-import  db  from "../db/index.js"
+import  {db}  from "../db/index.js"
 import { users } from "../db/schema.js"
 import { eq } from "drizzle-orm"
 
@@ -18,15 +18,15 @@ export async function registerUser(data: {
       password_hash: hash
     })
     .returning()
+    console.log(result);
   return result[0];
+  
 }
 
 
 export async function loginUser(email: string, password: string) {
   const result = await db
-    .select()
-    .from(users)
-    .where(eq(users.email, email))
+  .select().from(users).where(eq(users.email, email))
 
   const user = result[0]
 

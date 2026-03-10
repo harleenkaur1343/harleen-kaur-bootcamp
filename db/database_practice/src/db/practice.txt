@@ -1,0 +1,141 @@
+-- Basic SELECTs
+SELECT * from tasks;
+SELECT * from users;
+SELECT * from orders;
+
+-- Successful DELETEs
+DELETE FROM tasks WHERE title LIKE '%Practice joins%';
+
+-- Working JOINs
+SELECT u.email, o.product FROM users u INNER JOIN orders o ON u.id = o.user_id;
+SELECT u.email, o.product FROM users u LEFT JOIN orders o ON u.id = o.user_id;
+SELECT U.email, o.product FROM users u LEFT JOIN orders o ON u.id=o.user_id;
+SELECT U.email, o.product FROM users u RIGHT JOIN orders o ON u.id=o.user_id;
+
+-- Table Creation
+CREATE TABLE cars (
+  id SERIAL PRIMARY KEY,
+  make VARCHAR(50),
+  model VARCHAR(100),
+  year INTEGER,
+  propulsion_type VARCHAR(20),
+  time_to_60_mph_s DECIMAL(4,2),
+  limited_production_count INTEGER
+);
+
+-- Successful INSERTs
+INSERT INTO cars (make, model, year, propulsion_type, time_to_60_mph_s, limited_production_count) VALUES
+('Lamborghini', 'Huracán Performante', 2018, 'ICE', 2.2, NULL),
+('Ferrari', 'SF90 Stradale', 2021, 'Hybrid', 2, NULL),
+('Tesla', 'Model S Plaid', 2021, 'Electric', 1.98, NULL),
+('Porsche', '918 Spyder', 2015, 'Hybrid', 2.1, 918),
+('Rimac', 'Nevera', 2021, 'Electric', 1.74, 150),
+('Porsche', '911 Turbo S (992)', 2020, 'ICE', 2.1, NULL);
+
+INSERT INTO orders VALUES (5,7,'Web Cam');
+
+-- Column Operations
+ALTER TABLE cars RENAME time_to_60_mph_s TO ts60mph;
+
+-- Filtering & Sorting
+SELECT * FROM cars ORDER BY year;
+SELECT * FROM cars ORDER BY year DESC;
+SELECT * FROM cars ORDER BY year LIMIT 2;
+SELECT * FROM cars ORDER BY year DESC LIMIT 2;
+SELECT DISTINCT propulsion_type FROM cars;
+SELECT DISTINCT make FROM cars;
+SELECT make, model FROM cars WHERE ts60mph >=2.1;
+SELECT make, model FROM cars WHERE ts60mph =2.1;
+SELECT make, model FROM cars WHERE ts60mph <> 2.1;
+SELECT make, model, ts60mph FROM cars WHERE ts60mph != 2.1;
+SELECT make, model, ts60mph FROM cars WHERE ts60mph BETWEEN 1.98 AND 2.1;
+SELECT * FROM cars WHERE make IN ('Porsche','Tesla');
+SELECT * FROM cars WHERE make LIKE '%P%';
+SELECT * FROM cars WHERE make ILIKE '%P%';
+SELECT * FROM cars LIMIT 2 OFFSET 3;
+
+-- String Functions
+SELECT make || ' ' || model FROM cars;
+SELECT make || ' ' || model AS full_name FROM cars;
+SELECT email AS USER_EMAIL FROM users;
+
+-- Date/Time Functions
+SELECT NOW();
+SELECT CURRENT_DATE;
+SELECT CURRENT_TIME;
+
+-- Aggregates
+SELECT COUNT(*) FROM cars;
+SELECT COUNT(DISTINCT(make)) FROM cars;
+SELECT AVG(ts60mph) as SPEED_AVG FROM cars;
+SELECT MIN(YEAR) FROM cars;
+SELECT MAX(ts60mph) FROM cars;
+
+-- GROUP BY + Aggregates
+SELECT propulsion_type, COUNT(*) FROM cars GROUP BY propulsion_type;
+SELECT propulsion_type, AVG(ts60mph) AS mean_time FROM cars GROUP BY propulsion_type ORDER BY mean_time;
+SELECT propulsion_type, AVG(ts60mph) AS mean_time FROM cars WHERE limited_production_count IS NOT NULL GROUP BY propulsion_type;
+SELECT propulsion_type, AVG(ts60mph) AS mean_time FROM cars WHERE limited_production_count IS NOT NULL GROUP BY propulsion_type HAVING AVG(ts60mph) > 2;
+
+-- Categories/FK Example
+CREATE TABLE categories (
+  id SERIAL PRIMARY KEY,
+  name TEXT UNIQUE,
+  color TEXT
+);
+INSERT INTO categories (name, color) VALUES
+('Work', 'blue'),
+('Personal', 'green'),
+('Shopping', 'orange');
+ALTER TABLE tasks ADD COLUMN category_id INTEGER REFERENCES categories(id);
+-- Multiple UPDATEs to set category_id...
+
+SELECT c.name, t.title FROM tasks t INNER JOIN categories c ON t.category_id = c.id;
+SELECT c.name, count(t.title) AS task_count FROM tasks t INNER JOIN categories c ON t.category_id = c.id GROUP BY c.name ORDER BY c.name DESC;
+SELECT c.name, ARRAY_AGG(t.title) AS tasks FROM tasks t INNER JOIN categories c ON t.category_id = c.id GROUP BY c.name ORDER BY c.name DESC;
+
+-- Many-to-Many Example
+CREATE TABLE tags (id SERIAL PRIMARY KEY, name TEXT UNIQUE);
+CREATE TABLE task_tags (
+  task_id INTEGER REFERENCES tasks(id),
+  tag_id INTEGER REFERENCES tags(id),
+  PRIMARY KEY (task_id, tag_id)
+);
+INSERT INTO tags (name) VALUES ('urgent'), ('home'), ('office');
+-- Multiple INSERTs into task_tags...
+
+SELECT t.title, ARRAY_AGG(g.name) AS tags FROM tasks t
+JOIN task_tags tt ON t.id = tt.task_id
+JOIN tags g ON tt.tag_id = g.id
+GROUP BY t.title;
+
+-- Triggers
+ALTER TABLE users ADD COLUMN task_count INTEGER DEFAULT 0;
+CREATE OR REPLACE FUNCTION update_task_count()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'INSERT' THEN
+    UPDATE users SET task_count = task_count + 1 WHERE id = NEW.user_id;
+  ELSIF TG_OP = 'DELETE' THEN
+    UPDATE users SET task_count = task_count - 1 WHERE id = OLD.user_id;
+  END IF;
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER taskcount_trigger
+AFTER INSERT OR DELETE ON tasks
+FOR EACH ROW EXECUTE FUNCTION update_task_count();
+
+-- JSONB
+ALTER TABLE tasks ADD COLUMN metadata JSONB;
+INSERT INTO tasks (title,user_id,metadata) VALUES (
+  'Buy groceries',7,
+  '{"priority": "low", "store": "Walmart"}'
+);
+CREATE INDEX idx_tmetadata ON tasks USING gin(metadata);
+
+-- JSONB Queries
+SELECT metadata->>'priority' as PRIORITY FROM tasks;
+SELECT metadata->'priority' as PRIORITY FROM tasks;
+SELECT * FROM tasks WHERE metadata @> '{"priority": "low"}';
+SELECT * FROM tasks WHERE metadata->>'priority' = 'low';

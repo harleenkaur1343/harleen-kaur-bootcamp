@@ -164,7 +164,7 @@ export const openapiSpec = {
             type: "boolean",
             example: false
           },
-          createdAt: {
+          created_at: {
             type: "string",
             format: "date-time",
             example: "2026-03-05T10:00:00Z"
