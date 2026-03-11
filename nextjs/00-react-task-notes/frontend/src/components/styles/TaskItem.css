@@ -1,0 +1,48 @@
+.task-item {
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #fafafa;
+}
+
+.task-item.completed {
+  background: #e8f5e9;
+  text-decoration: line-through;
+  opacity: 0.8;
+}
+
+.task-main {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+}
+
+.task-text h4 {
+  margin: 0;
+}
+
+.task-text p {
+  margin: 4px 0 0;
+  color: #555;
+}
+
+.task-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.task-actions button {
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.task-edit input,
+.task-edit textarea {
+  display: block;
+  margin-bottom: 6px;
+  width: 100%;
+}

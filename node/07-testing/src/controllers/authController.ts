@@ -28,6 +28,7 @@ export async function login(
   res: Response,
   next: NextFunction
 ) {
+  console.log("In login controller");
   try {
     const { email, password } = req.body
 
@@ -45,7 +46,7 @@ export async function login(
       _id: user.id,
       role: user.role
     })
-
+    console.log("Token", token);
     res.json({
       token
     })

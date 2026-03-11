@@ -30,13 +30,13 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE"],
 }));
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // 100 requests per IP
-  standardHeaders: true,
-  legacyHeaders: false,
-})
-app.use(limiter);
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 100, // 100 requests per IP
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// })
+//app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -48,9 +48,9 @@ app.use(requestLogger);
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 //routes
-app.use("/health", healthRouter);
-app.use("/api/info", infoRouter);
-app.use("/api/echo", echoRouter);
+// app.use("/health", healthRouter);
+// app.use("/api/info", infoRouter);
+// app.use("/api/echo", echoRouter);
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/auth", authRoutes);
 app.get("/metrics", (req, res) => {
