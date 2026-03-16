@@ -6,24 +6,26 @@ import { TaskCard } from "../components/TaskCard"
 import { apiClient } from "@/lib/api-client";
 import type { Task } from '@/types/task';
 
-
+type Taskwrapper = {
+ data : Task[]
+}
 export default async function TasksPage() {
   
   const cookieStore = await cookies();
   const token = cookieStore.get('auth-token')?.value;
-  console.log("token", token);
   
-  // if (!token) {
-  //   redirect('/login'); // Auto-redirect if not logged in
-  // }
+  if (!token) {
+    redirect('/login'); // Auto-redirect if not logged in
+  }
 
    let tasks: Task[] = [];
 
   try {
-    const taskwrapper = await apiClient.getTasks();
-    tasks = taskwrapper.data;
+    const taskwrapper = await apiClient.getTasks() as Taskwrapper;
+    console.log("Taskwrapper", taskwrapper);
+    tasks = taskwrapper.data ;
     console.log("All tasks", tasks);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Failed to fetch tasks:", error);
     // Don't throw - show error UI instead
   }

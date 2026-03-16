@@ -5,7 +5,7 @@ export type Task = {
   completed: boolean
   priority: 'low' | 'medium' | 'high',
   created_at: string
-  updatedAt: string
+  updated_at: string
   user_id: number
 }
 

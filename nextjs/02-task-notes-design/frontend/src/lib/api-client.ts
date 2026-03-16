@@ -1,6 +1,9 @@
 import { cookies } from "next/headers";
 import type { Task } from "@/types/task";
 
+export interface TaskWrapper {
+  data: Task[];
+}
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:9000/api";
 
@@ -36,9 +39,9 @@ async function authenticatedRequest<T>(
 
 export const apiClient = {
   // Authenticated endpoints
-  getTasks: () => authenticatedRequest<Task[]>("/tasks"),
+  getTasks: () => authenticatedRequest<TaskWrapper>("/tasks"),
   getTask: (id: string) => authenticatedRequest<Task>(`/tasks/${id}`),
-  createTask: (task: Omit<Task, "id" | "createdAt" | "updatedAt">) =>
+  createTask: (task: Omit<Task, "id" | "created_at" | "updated_at" | "user_id">) =>
     authenticatedRequest<Task>("/tasks", {
       method: "POST",
       body: JSON.stringify(task),

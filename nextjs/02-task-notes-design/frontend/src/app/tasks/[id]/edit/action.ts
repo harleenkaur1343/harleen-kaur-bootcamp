@@ -3,11 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { apiClient } from "@/lib/api-client";
 import { redirect } from "next/navigation";
+import { Priority } from "@/types/task"
 
 export async function updateTask(id:string, formData:FormData){
     const title = formData.get('title') as string;
     const description = (formData.get('description') as string) || "";
-    const priority = (formData.get('priority') as string) || 'medium';
+    const priority = (formData.get('priority') as Priority) || 'medium';
 
     if(!title || title.trim().length === 0 ){
       throw new Error('Title is invalid')

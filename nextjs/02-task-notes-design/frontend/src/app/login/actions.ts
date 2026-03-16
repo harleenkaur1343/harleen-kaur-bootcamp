@@ -7,6 +7,10 @@ import { api } from "@/lib/api";
 
 type Response = {
   token : string
+  user : {
+    id:number;
+    email:string;
+  }
 };
 
 export async function login(prevState: { error: string } | null, formData: FormData) {
@@ -18,7 +22,7 @@ export async function login(prevState: { error: string } | null, formData: FormD
   }
 
   try {
-    const response : Response = await api.login({ email, password });
+    const response : Response = await api.login({ email, password }) as Response;
 
     // Store token in HTTP-only cookie
     console.log("Action login response token", response.token);
@@ -70,7 +74,7 @@ export async function register(prevState: { error: string } | null, formData: Fo
     password,
   };
   try {
-    const response = await api.register(data);
+    const response = await api.register(data) as Response;
 
     cookie.set("auth-token", response.token, {
       httpOnly: true,

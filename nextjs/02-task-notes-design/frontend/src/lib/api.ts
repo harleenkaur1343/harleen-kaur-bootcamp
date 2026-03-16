@@ -58,36 +58,6 @@ async function apiRequest<T>(
 }
 
 export const api = {
-  //get all tasks
-  // getTasks: (): Promise<Task[]> => {
-  //   return apiRequest<Task[]>("/tasks");
-  // },
-
-  // getTask: (id: string): Promise<Task> => {
-  //   return apiRequest<Task>(`/tasks/${id}`);
-  // },
-
-  // createTask: (
-  //   task: Omit<Task, "id" | "createdAt" | "updatedAt">,
-  // ): Promise<Task> => {
-  //   return apiRequest("/tasks", {
-  //     method: "POST",
-  //     body: JSON.stringify(task),
-  //   });
-  // },
-  // updateTask(id: string, updates: Partial<Task>): Promise<Task> {
-  //   return apiRequest<Task>(`tasks/${id}`, {
-  //     method: "PUT",
-  //     body: JSON.stringify(updates),
-  //   });
-  // },
-  // deleteTask: (id: string): Promise<void> =>
-  //   apiRequest<void>(`/tasks/${id}`, {
-  //     method: "DELETE",
-  //   }),
-
-  // //user auth
-
   login: (info: Login) => {
     const res = apiRequest("/auth/login", {
       method: "POST",

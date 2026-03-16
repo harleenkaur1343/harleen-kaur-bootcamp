@@ -112,7 +112,7 @@ export default function AnimatedEditForm({ task, id }: AnimatedEditFormProps) {
                     id="description"
                     name="description"
                     placeholder="Add task details..."
-                    defaultValue={task.description}
+                    defaultValue={task.description? task.description : ""}
                     className="
                       min-h-[120px] resize-none
                       border-gray-200

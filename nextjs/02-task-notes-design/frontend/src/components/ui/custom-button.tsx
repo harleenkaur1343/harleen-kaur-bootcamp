@@ -1,7 +1,8 @@
 // components/ui/custom-button.tsx
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import { Button, ButtonProps } from "@/components/ui/button";
+import { Button} from "@/components/ui/button";
+import type {ButtonProps} from "@/components/ui/button";
 
 const customButtonVariants = cva(
   "relative overflow-hidden transition-all duration-200",

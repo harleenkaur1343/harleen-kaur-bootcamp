@@ -4,6 +4,8 @@ import { jwtVerify } from 'jose';
 const protectedRoutes = ['/tasks', '/profile', '/settings'];
 const authRoutes = ['/login', '/register'];
 
+
+
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const token = request.cookies.get('auth-token');
@@ -20,6 +22,7 @@ export async function middleware(request: NextRequest) {
 
   // Skip middleware for login/register pages entirely
   if (isAuthRoute) {
+
     const hasValidToken = await hasValidTokenAsync(token, JWT_SECRET);
     if (hasValidToken) {
       return NextResponse.redirect(new URL('/tasks', request.url));
@@ -42,9 +45,8 @@ export async function middleware(request: NextRequest) {
 }
 
 //  Helper function
-async function hasValidTokenAsync(token: any, secret: Uint8Array) {
+async function hasValidTokenAsync(token: ReturnType<NextRequest['cookies']['get']> | null, secret: Uint8Array) {
   if (!token?.value) return false;
-  
   try {
     await jwtVerify(token.value, secret);
     return true;
