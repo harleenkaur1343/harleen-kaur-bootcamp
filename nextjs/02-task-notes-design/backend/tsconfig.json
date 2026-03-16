@@ -5,14 +5,14 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "rootDir": "src",
-    "outDir": "dist",
+    "outDir": "./dist",
     "strict": true,
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
       "@utils/*": ["src/utils/*"]
     },
-     "skipLibCheck":true,
+    "skipLibCheck": true
   },
-  "include": ["src",]
+  "include": ["src", "src/index.ts"]
 }

@@ -11,19 +11,19 @@ const server = app.listen(PORT, HOST, () => {
 
 // Graceful shutdown on SIGINT (Ctrl+C)
 function shutdown() {
-  console.log("Shutting down server...")
+  console.log("Shutting down server...");
 
   server.close(() => {
-    console.log("HTTP server closed")
+    console.log("HTTP server closed");
     closeDb();
-    process.exit(0)
-  })
+    process.exit(0);
+  });
 
   setTimeout(() => {
-    console.error("Force shutdown")
-    process.exit(1)
-  }, 10000).unref()
+    console.error("Force shutdown");
+    process.exit(1);
+  }, 10000).unref();
 }
 
-process.on("SIGINT", shutdown)
-process.on("SIGTERM", shutdown)
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
