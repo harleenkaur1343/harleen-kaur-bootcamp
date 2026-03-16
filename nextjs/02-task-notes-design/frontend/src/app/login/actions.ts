@@ -5,6 +5,10 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { api } from "@/lib/api";
 
+type Response = {
+  token : string
+};
+
 export async function login(prevState: { error: string } | null, formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -14,7 +18,7 @@ export async function login(prevState: { error: string } | null, formData: FormD
   }
 
   try {
-    const response = await api.login({ email, password });
+    const response : Response = await api.login({ email, password });
 
     // Store token in HTTP-only cookie
     console.log("Action login response token", response.token);

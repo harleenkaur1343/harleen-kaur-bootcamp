@@ -13,6 +13,3 @@ import { tasks } from 'src/db/schema.js';
 
 export type Task = InferSelectModel<typeof tasks>;
 
-// export const tasks : Task[] = [
- 
-// ]

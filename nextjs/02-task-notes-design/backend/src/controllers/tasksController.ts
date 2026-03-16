@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express"
 import { createTaskSchema, updateTaskSchema } from "../schemas/taskSchemas.js"
 import { Task } from "../types/tasks.js"
 import crypto from "crypto";
-import { tasks } from "../types/tasks.js";
 import * as dbOps from "../services/tasksService.js"
 
 export async function createTask(req: Request, res: Response, next: NextFunction) {
@@ -17,7 +16,7 @@ export async function createTask(req: Request, res: Response, next: NextFunction
       priority: data.priority?? 'medium',
       created_at: new Date(),
       updated_at: new Date(),
-      user_id: req.user._id,
+      user_id: req.user!._id,
     }
 
   const created = await dbOps.createTask(task)
@@ -42,7 +41,7 @@ const { page = "1", limit = "10", completed, sort } = req.query
   }
 
   if (sort === "created_at") {
-    result.sort((a, b) => a.created_at.localeCompare(b.created_at))
+    result.sort((a, b) => a.created_at.toISOString().localeCompare(b.created_at.toISOString()));
   }
 
   const p = Number(page)
@@ -69,7 +68,7 @@ const { page = "1", limit = "10", completed, sort } = req.query
 
 export async function getTask(req: Request, res: Response, next: NextFunction) {
 
-  const task = await dbOps.getTaskById(req.params.id)
+  const task = await dbOps.getTaskById(Array.isArray(req.params.id) ? req.params.id[0] : req.params.id)
   
   if (!task) {
     return next({
@@ -86,7 +85,7 @@ export async function updateTask(req: Request, res: Response, next: NextFunction
   try {
     const data = updateTaskSchema.parse(req.body)
 
- const task = await dbOps.updateTask(req.params.id, data)
+ const task = await dbOps.updateTask(Array.isArray(req.params.id) ? req.params.id[0] : req.params.id, data)
     if (!task) {
       return next({
         status: 404,
@@ -106,7 +105,7 @@ export async function updateTask(req: Request, res: Response, next: NextFunction
 export async function deleteTask(req: Request, res: Response, next: NextFunction) {
   try {
 
-    await dbOps.deleteTask(req.params.id)
+    await dbOps.deleteTask(Array.isArray(req.params.id) ? req.params.id[0] : req.params.id)
 
     res.status(200).json({success : true});
 
