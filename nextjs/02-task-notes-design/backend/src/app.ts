@@ -47,7 +47,7 @@ app.use(requestLogger);
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 //routes
-app.use("/health", healthRouter);
+app.use("/api/health", healthRouter);
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/auth", authRoutes);
 app.get("/metrics", (req, res) => {
