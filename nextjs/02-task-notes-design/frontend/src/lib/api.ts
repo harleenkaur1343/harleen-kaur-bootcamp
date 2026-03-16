@@ -42,8 +42,6 @@ async function apiRequest<T>(
 
     if (!response.ok) {
       //adding status i.e number
-
-      console.log("Get tasks err", response.json());
       const error = new Error(`API Error ${response.statusText}`) as ApiError;
       error.status = response.status;
       throw error;
