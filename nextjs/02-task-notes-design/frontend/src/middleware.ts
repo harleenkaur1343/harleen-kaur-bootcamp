@@ -1,68 +1,59 @@
-// middleware.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'your-secret-key'
-);
-
-// Routes that require authentication
 const protectedRoutes = ['/tasks', '/profile', '/settings'];
-
-// Routes that should redirect to tasks if already authenticated
 const authRoutes = ['/login', '/register'];
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const token = request.cookies.get('auth-token')?.value;
+  const token = request.cookies.get('auth-token');
+  
+  // console.log("PATH:", path);
+  // console.log("TOKEN:", token?.value);
 
-  // Check if the current path is protected
-  const isProtectedRoute = protectedRoutes.some(route =>
-    path.startsWith(route)
+  const JWT_SECRET = new TextEncoder().encode(
+    process.env.JWT_SECRET
   );
 
-  // Check if the current path is an auth route
-  const isAuthRoute = authRoutes.some(route =>  
-    path.startsWith(route)                        
-  );
+  const isProtectedRoute = protectedRoutes.some(route => path.startsWith(route));
+  const isAuthRoute = authRoutes.some(route => path.startsWith(route));
 
-  // Verify token if it exists
-  let isValidToken = false;
-  if (token) {
-    try {
-      const decoded = await jwtVerify(token, JWT_SECRET);
-      //console.log("Decoded with middleware",decoded);
-      isValidToken = true;
-    } catch (error) {
-      // Token is invalid or expired
-     // const response = NextResponse.redirect(new URL('/login', request.url));
-      // response.cookies.delete('auth-token');
-      // response.cookies.delete('user');
-      isValidToken = false
+  // Skip middleware for login/register pages entirely
+  if (isAuthRoute) {
+    const hasValidToken = await hasValidTokenAsync(token, JWT_SECRET);
+    if (hasValidToken) {
+      return NextResponse.redirect(new URL('/tasks', request.url));
     }
+    return NextResponse.next(); // Allow access to login/register
   }
 
-  // Redirect logic
-  if (isProtectedRoute && !isValidToken) {
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
-
-  if (isAuthRoute && isValidToken) {
-    return NextResponse.redirect(new URL('/tasks', request.url));
+  // Protected routes
+  if (isProtectedRoute) {
+    const hasValidToken = await hasValidTokenAsync(token, JWT_SECRET);
+    if (!hasValidToken) {
+      const response = NextResponse.redirect(new URL('/login', request.url));
+      response.cookies.delete('auth-token');
+      response.cookies.delete('user');
+      return response;
+    }
   }
 
   return NextResponse.next();
 }
 
+//  Helper function
+async function hasValidTokenAsync(token: any, secret: Uint8Array) {
+  if (!token?.value) return false;
+  
+  try {
+    await jwtVerify(token.value, secret);
+    return true;
+  } catch(error) {
+    console.log("Error in verifying", error);
+    return false;
+  }
+}
+
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|login|register).*)'],
 };

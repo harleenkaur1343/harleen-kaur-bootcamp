@@ -13,9 +13,9 @@ export default async function TasksPage() {
   const token = cookieStore.get('auth-token')?.value;
   console.log("token", token);
   
-  if (!token) {
-    redirect('/login'); // Auto-redirect if not logged in
-  }
+  // if (!token) {
+  //   redirect('/login'); // Auto-redirect if not logged in
+  // }
 
    let tasks: Task[] = [];
 

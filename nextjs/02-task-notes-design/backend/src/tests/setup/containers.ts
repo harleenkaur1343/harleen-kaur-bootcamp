@@ -12,7 +12,7 @@ export async function startContainer(){
     .start()
 
     process.env.DATABASE_URL = container.getConnectionUri();
-    console.log("TEST DB URI ",process.env.DATABASE_URL)
+    //console.log("TEST DB URI ",process.env.DATABASE_URL)
     return container;
 }
 

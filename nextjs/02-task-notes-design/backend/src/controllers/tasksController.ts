@@ -8,7 +8,7 @@ import * as dbOps from "../services/tasksService.js"
 export async function createTask(req: Request, res: Response, next: NextFunction) {
   try {
     const data : any = createTaskSchema.parse(req.body)
-    console.log("task data", data, req.user._id)
+   // console.log("task data", data, req.user._id)
     const task: Task = {
       id: crypto.randomUUID(),
       title: data.title,
@@ -32,7 +32,7 @@ export async function listTasks(req: Request, res: Response, next : NextFunction
   //let result = [...tasks]
   try{
 let result = await dbOps.getTasks(req.user);
-console.log("DB USER TASKS", result);
+//console.log("DB USER TASKS", result);
 const { page = "1", limit = "10", completed, sort } = req.query
 
   if (completed !== undefined) {

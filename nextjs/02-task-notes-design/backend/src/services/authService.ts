@@ -18,7 +18,7 @@ export async function registerUser(data: {
       password_hash: hash
     })
     .returning()
-    console.log(result);
+    //console.log(result);
   return result[0];
   
 }
@@ -29,12 +29,12 @@ export async function loginUser(email: string, password: string) {
   .select().from(users).where(eq(users.email, email))
 
   const user = result[0];
-  console.log("User in service", user)
+  //console.log("User in service", user)
 
   if (!user) return null
 
   const valid = await bcrypt.compare(password, user.password_hash)
-  console.log("Is valid ", valid)
+  //console.log("Is valid ", valid)
   if (!valid) return null
 
   return user;

@@ -23,12 +23,12 @@ export async function register(
 }
 
 export async function login(req: Request, res: Response, next: NextFunction) {
-  console.log("In login controller");
+  //console.log("In login controller");
   try {
     const { email, password } = req.body;
 
     const user = await loginUser(email, password);
-    console.log(user);
+    //console.log(user);
 
     if (!user) {
       return res.status(401).json({

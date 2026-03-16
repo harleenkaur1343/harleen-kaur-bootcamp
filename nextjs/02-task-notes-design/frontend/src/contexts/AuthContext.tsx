@@ -41,11 +41,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     // Call server action
-    const response = await fetch('/auth/logout', { method: 'POST' });
-    if (response.ok) {
-      setUser(null);
-      window.location.href = '/login';
-    }
+    // const response = await fetch('/auth/logout', { method: 'POST' });
+    // if (response.ok) {
+    //   setUser(null);
+    //   window.location.href = '/login';
+    // }
   };
 
   return (
