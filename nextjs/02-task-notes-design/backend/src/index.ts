@@ -6,7 +6,7 @@ const PORT = Number(process.env.PORT) || 3001;
 const HOST = process.env.HOST || "localhost";
 
 const server = app.listen(PORT, HOST, () => {
-  console.log(`Listening on http://${HOST}:${PORT}`);
+  console.log(`Listening on ${HOST}:${PORT}`);
 });
 
 // Graceful shutdown on SIGINT (Ctrl+C)
