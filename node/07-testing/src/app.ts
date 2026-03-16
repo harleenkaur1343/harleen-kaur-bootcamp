@@ -17,17 +17,20 @@ import { metrics } from "./metrics/metrics.js"
 import { requestId } from "./middleware/requestIds.js"
 import { withRetry } from "./http/retry.js";
 import { fetchJson } from "./http/fetchJson.js";
+import cookieParser from 'cookie-parser';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
+app.use(cookieParser('dev-secret'));
 //for HTTP headers
-app.use(helmet())
-
+//app.use(helmet());
 //middleware
 app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: 'http://localhost:3000', 
+  credentials: true,               // Allow cookies
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // const limiter = rateLimit({
@@ -48,14 +51,19 @@ app.use(requestLogger);
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 //routes
-// app.use("/health", healthRouter);
-// app.use("/api/info", infoRouter);
-// app.use("/api/echo", echoRouter);
+app.use("/health", healthRouter);
+app.use("/api/info", infoRouter);
+app.use("/api/echo", echoRouter);
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/auth", authRoutes);
 app.get("/metrics", (req, res) => {
   res.type("text/plain").send(metrics())
 })
+app.get('/debug-cookies', (req, res) => {
+  console.log('ALL COOKIES:', req.cookies);
+  console.log('RAW COOKIE HEADER:', req.headers.cookie);
+  res.json({ cookies: req.cookies, header: req.headers.cookie });
+});
 
 
 app.get("/test-weather", async (req, res) => {

@@ -7,7 +7,6 @@ export async function apiFetch<T>(
   options: RequestInit = {}
 ): Promise<T> {
   const token = localStorage.getItem("token")
-
   const response = await fetch(`${API_BASE}${path}`, {
     ...options,
     headers: {
