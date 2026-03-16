@@ -9,7 +9,7 @@ export const env = {
   retries:           Number(process.env.HTTP_RETRIES  || 3),
 
   // add these
-  db: {
+  db: {    
     url:      process.env.DATABASE_URL!,
   },
   auth: {
