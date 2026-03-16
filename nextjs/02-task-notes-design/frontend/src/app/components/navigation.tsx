@@ -18,6 +18,7 @@ export default function Navigation() {
           </Link>
           <Link href="/login">Login</Link>
           <Link href="/register">Register</Link>
+          <Link href="/logout">Logout</Link>
         </div>
         <ThemeToggle />
       </div>

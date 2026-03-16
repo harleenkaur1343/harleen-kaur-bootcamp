@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 import "./globals.css";
 import Navigation from "./components/navigation";
@@ -28,15 +29,16 @@ export default function RootLayout({
 }>) {
   //WITH antialiased:      text looks smooth and crisp
   return (
-    <html lang="en"
-     className={`${nunitoSans.className}`}  // ✅ FIXED!
-      suppressHydrationWarning 
+    <html
+      lang="en"
+      className={`${nunitoSans.className}`} // ✅ FIXED!
+      suppressHydrationWarning
     >
-      <body
-        className={`${nunitoSans.variable} antialiased`}
-      >
-        <Navigation />
-        <main className="flex-1 container mx-auto p-6"> {children}</main>
+      <body className={`${nunitoSans.variable} antialiased`}>
+        <AuthProvider>
+          <Navigation />
+          <main className="flex-1 container mx-auto p-6"> {children}</main>
+        </AuthProvider>
 
         <Footer />
       </body>

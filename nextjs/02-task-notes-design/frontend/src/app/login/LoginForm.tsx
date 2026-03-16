@@ -84,16 +84,16 @@ export default function LoginForm() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2, duration: 0.4 }}
             >
-              <CardTitle className="text-2xl font-bold text-gray-900">
+              <CardTitle className="text-center text-2xl font-bold text-gray-900">
                 Sign in
               </CardTitle>
-              <CardDescription className="text-gray-500 mt-1">
+              <CardDescription className="text-center text-gray-500 mt-1">
                 Welcome back to Task Notes
               </CardDescription>
             </motion.div>
           </CardHeader>
 
-          <CardContent className="pt-6">
+          <CardContent className="pt-3">
             <form action={formAction}>
               <motion.div
                 variants={containerVariants}

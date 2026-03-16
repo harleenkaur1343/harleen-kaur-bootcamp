@@ -91,10 +91,10 @@ export async function register(prevState: { error: string } | null, formData: Fo
   redirect("/tasks");
 }
 
-// export async function logout() {
+export async function logout() {
   
-// const cookie = await cookies();
-//   cookie.delete("auth-token");
-//   cookie.delete("user");
-//   redirect("/login");
-// }
+const cookie = await cookies();
+  cookie.delete("auth-token");
+  cookie.delete("user");
+  redirect("/login");
+}

@@ -22,12 +22,10 @@ export default async function TasksPage() {
 
   try {
     const taskwrapper = await apiClient.getTasks() as Taskwrapper;
-    console.log("Taskwrapper", taskwrapper);
     tasks = taskwrapper.data ;
-    console.log("All tasks", tasks);
+
   } catch (error: unknown) {
     console.error("Failed to fetch tasks:", error);
-    // Don't throw - show error UI instead
   }
 
   return (

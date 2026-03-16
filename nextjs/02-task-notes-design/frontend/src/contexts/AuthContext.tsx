@@ -12,7 +12,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  logout: () => void;
+  clearUser  : () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -39,17 +39,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(false);
   }, []);
 
-  const logout = async () => {
-    // Call server action
-    // const response = await fetch('/auth/logout', { method: 'POST' });
-    // if (response.ok) {
-    //   setUser(null);
-    //   window.location.href = '/login';
-    // }
-  };
+ const clearUser = () => setUser(null)
 
   return (
-    <AuthContext.Provider value={{ user, loading, logout }}>
+    <AuthContext.Provider value={{ user, loading, clearUser }}>
       {children}
     </AuthContext.Provider>
   );
