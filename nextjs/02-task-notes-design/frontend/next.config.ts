@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import ".env";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -8,7 +7,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: `import.meta.${apiUrl}/api/:path*`,
+        destination: `${apiUrl}/api/:path*`,
       },
     ];
   },
