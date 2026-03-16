@@ -14,6 +14,8 @@ import { requestId } from "./middleware/requestIds.js"
 import { withRetry } from "./http/retry.js";
 import { fetchJson } from "./http/fetchJson.js";
 import cookieParser from 'cookie-parser';
+import dotenv from "dotenv";
+dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -22,8 +24,9 @@ app.use(cookieParser('dev-secret'));
 //for HTTP headers
 //app.use(helmet());
 //middleware
+const crossurl = process.env.FRONTEND_URL;
 app.use(cors({
-  origin: 'http://localhost:3000', 
+  origin: crossurl, 
   credentials: true,               // Allow cookies
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']

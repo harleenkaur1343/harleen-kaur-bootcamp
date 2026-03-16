@@ -1,4 +1,6 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config();
+
 import app from "./app.js";
 import { closeDb } from "./db/index.js";
 
