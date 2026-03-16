@@ -3,7 +3,7 @@ import app from "./app.js";
 import { closeDb } from "./db/index.js";
 
 const PORT = Number(process.env.PORT) || 3001;
-const HOST = process.env.HOST || "localhost";
+const HOST = process.env.HOST || "0.0.0.0"; //use localhost for dev
 
 const server = app.listen(PORT, HOST, () => {
   console.log(`Listening on ${HOST}:${PORT}`);
