@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/dialog";
 import Link from "next/link";
 // import { apiClient } from "@/lib/api-client";
-import { toggleTaskCompletion, deleteTask } from "@/lib/actions"
+import { toggleTaskCompletion, deleteTask } from "@/lib/actions";
 import type { Task } from "@/types/task";
 
 interface TaskDetailClientProps {
@@ -33,9 +33,21 @@ interface TaskDetailClientProps {
 }
 
 const priorityConfig = {
-  low:    { badge: "bg-green-100 text-green-800",   dot: "bg-green-500",  border: "border-green-200"  },
-  medium: { badge: "bg-yellow-100 text-yellow-800", dot: "bg-yellow-500", border: "border-yellow-200" },
-  high:   { badge: "bg-red-100 text-red-800",       dot: "bg-red-500",    border: "border-red-200"    },
+  low: {
+    badge: "bg-green-100 text-green-800",
+    dot: "bg-green-500",
+    border: "border-green-200",
+  },
+  medium: {
+    badge: "bg-yellow-100 text-yellow-800",
+    dot: "bg-yellow-500",
+    border: "border-yellow-200",
+  },
+  high: {
+    badge: "bg-red-100 text-red-800",
+    dot: "bg-red-500",
+    border: "border-red-200",
+  },
 };
 
 export default function TaskDetailClient({ task }: TaskDetailClientProps) {
@@ -44,6 +56,7 @@ export default function TaskDetailClient({ task }: TaskDetailClientProps) {
   const [action, setAction] = useState<"toggle" | "delete" | null>(null);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isCompleted, setIsCompleted] = useState(task.completed);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const priority = priorityConfig[task.priority];
 
@@ -53,7 +66,7 @@ export default function TaskDetailClient({ task }: TaskDetailClientProps) {
     startTransition(async () => {
       try {
         await toggleTaskCompletion(task.id, !isCompleted);
-        setIsCompleted(!isCompleted)  // optimistic update
+        setIsCompleted(!isCompleted); // optimistic update
       } catch (error) {
         console.error("Failed to toggle task:", error);
       } finally {
@@ -65,14 +78,23 @@ export default function TaskDetailClient({ task }: TaskDetailClientProps) {
   // delete task
   const handleDelete = () => {
     setAction("delete");
+    setDeleteError(null);
     startTransition(async () => {
       try {
-        await deleteTask(task.id);
-        setIsDeleteOpen(false);
-        router.push("/tasks");        // ← go back to tasks after delete
-        router.refresh();
+        const response = (await deleteTask(task.id)) as {
+          success: boolean;
+          error: string;
+        };
+        if (response.success) {
+          setIsDeleteOpen(false);
+          router.push("/tasks");
+          router.refresh();
+        } else {
+          setDeleteError(response.error);
+          setAction(null);
+        }
       } catch (error) {
-        console.error("Failed to delete task:", error);
+        console.log("Error ", error);
         setAction(null);
       }
     });
@@ -80,7 +102,6 @@ export default function TaskDetailClient({ task }: TaskDetailClientProps) {
 
   return (
     <div className="container mx-auto p-8 max-w-2xl">
-
       {/* back button */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
@@ -105,17 +126,17 @@ export default function TaskDetailClient({ task }: TaskDetailClientProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <div className={`
+        <div
+          className={`
           bg-white rounded-2xl shadow-sm
           border border-gray-200
           overflow-hidden
-        `}>
-
+        `}
+        >
           {/* priority color bar */}
           <div className={`h-2 w-full ${priority.dot}`} />
 
           <div className="p-6 space-y-6">
-
             {/* header — title + badges */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -169,8 +190,11 @@ export default function TaskDetailClient({ task }: TaskDetailClientProps) {
                   variant="secondary"
                   className={`${priority.badge} flex items-center gap-1.5 px-2.5`}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full ${priority.dot}`} />
-                  {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full ${priority.dot}`}
+                  />
+                  {task.priority.charAt(0).toUpperCase() +
+                    task.priority.slice(1)}
                 </Badge>
 
                 {/* completion badge — animated */}
@@ -184,9 +208,10 @@ export default function TaskDetailClient({ task }: TaskDetailClientProps) {
                   >
                     <Badge
                       variant={isCompleted ? "default" : "outline"}
-                      className={isCompleted
-                        ? "bg-green-100 text-green-800 border-green-200"
-                        : "text-yellow-700 border-yellow-300 bg-yellow-50"
+                      className={
+                        isCompleted
+                          ? "bg-green-100 text-green-800 border-green-200"
+                          : "text-yellow-700 border-yellow-300 bg-yellow-50"
                       }
                     >
                       {isCompleted ? (
@@ -236,9 +261,7 @@ export default function TaskDetailClient({ task }: TaskDetailClientProps) {
               className="flex items-center gap-2 text-sm text-gray-400"
             >
               <Calendar className="w-4 h-4" />
-              <span>
-                Created {new Date(task.created_at).toLocaleString()}
-              </span>
+              <span>Created {new Date(task.created_at).toLocaleString()}</span>
             </motion.div>
 
             <Separator />
@@ -281,7 +304,6 @@ export default function TaskDetailClient({ task }: TaskDetailClientProps) {
                 </Button>
               </motion.div>
             </motion.div>
-
           </div>
         </div>
       </motion.div>
@@ -293,14 +315,12 @@ export default function TaskDetailClient({ task }: TaskDetailClientProps) {
             <DialogTitle className="text-xl">Delete Task</DialogTitle>
             <DialogDescription className="text-gray-500">
               Are you sure you want to delete{" "}
-              <span className="font-semibold text-gray-700">
-                {task.title}
-              </span>
-              ? This action cannot be undone.
+              <span className="font-semibold text-gray-700">{task.title}</span>?
+              This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
 
-          <DialogFooter className="gap-2 sm:gap-0">
+          <DialogFooter className="gap-4 sm:gap-0">
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Button
                 variant="outline"
@@ -332,9 +352,20 @@ export default function TaskDetailClient({ task }: TaskDetailClientProps) {
               </Button>
             </motion.div>
           </DialogFooter>
+
+          {deleteError && (
+            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm">{deleteError}</p>
+              <button
+                onClick={() => setDeleteError(null)}
+                className="mt-2 text-xs text-red-500 hover:underline"
+              >
+                Dismiss
+              </button>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
-
     </div>
   );
 }

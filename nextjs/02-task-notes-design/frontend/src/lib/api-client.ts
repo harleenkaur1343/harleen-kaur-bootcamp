@@ -5,6 +5,11 @@ export interface TaskWrapper {
   data: Task[];
 }
 
+interface ApiError {
+  status: number;
+  message: string;
+}
+
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:9000/api";
 
 async function authenticatedRequest<T>(
@@ -31,7 +36,11 @@ async function authenticatedRequest<T>(
   }
 
   if (!response.ok) {
-    throw new Error(`API Error: ${response.statusText}`);
+    const errorText = await response.text();
+    throw { 
+      status: response.status, 
+      message: errorText || `API Error: ${response.statusText}` 
+    } as ApiError;
   }
 
   return response.json();

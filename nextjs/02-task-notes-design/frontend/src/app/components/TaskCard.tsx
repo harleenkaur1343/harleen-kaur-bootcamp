@@ -24,45 +24,6 @@ export function TaskCard({ task, index } : TaskCardProps) {
  const priority = priorityConfig[task.priority];
 
   return (
-    // <Card className="">
-    //   <CardHeader className="">
-    //     <div className="flex justify-between items-start">
-    //       <div className="space-y-1">
-    //         <h3 className="text-lg font-semibold leading-none tracking-tight">
-    //           {task.title}
-    //         </h3>
-    //         <p className="text-sm text-muted-foreground">
-    //           Created {new Date(task.created_at).toLocaleDateString()}
-    //         </p>
-    //       </div>
-
-    //       <div className="flex items-center gap-2">
-    //         <Badge
-    //           variant="secondary"
-    //           className={priorityColors[task.priority]}
-    //         >
-    //           {task.priority}
-    //         </Badge>
-    //         <Badge variant={task.completed ? "default" : "outline"}>
-    //           {task.completed ? "Completed" : "Pending"}
-    //         </Badge>
-    //       </div>
-    //     </div>
-    //   </CardHeader>
-    //   <Separator />
-    //   <CardContent>
-    //     <div>
-    //       </div>
-    //     <div className="flex justify-end gap-2">
-    //       <Button variant="outline" size="sm" asChild>
-    //         <Link href={`/tasks/${task.id}`}>View Details</Link>
-    //       </Button>
-    //       <Button variant="outline" size="sm" asChild>
-    //         <Link href={`/tasks/${task.id}/edit`}>Edit</Link>
-    //       </Button>
-    //     </div>
-    //   </CardContent>
-    // </Card>
     <motion.div
       variants={itemVariants}
       initial="hidden"
