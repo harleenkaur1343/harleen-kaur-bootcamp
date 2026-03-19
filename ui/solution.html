@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Single Material Symbols link — loads all icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <title>Semantic HTML Layout</title>
+    <style>
+      @media (min-width: 768px) {
+        aside {
+          background: var(--color-bg);
+          color: var(--color-text);
+        }
+        aside a {
+          color: var(--color-text);
+        }
+        .hero h1 {
+          text-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.12),
+            0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+        .layout {
+          grid-template-columns: 1fr minmax(180px, 220px);
+          grid-template-areas:
+            "header header"
+            "nav nav"
+            "main aside"
+            "footer footer";
+        }
+        .nav-inner {
+          max-width: 1100px;
+          margin: 0 auto;
+        }
+
+        .nav-toggle {
+          display: none;
+        }
+        .nav-links {
+          display: flex;
+          flex-direction: row;
+          gap: var(--space-4);
+          position: static;
+          padding: 0;
+          background: none;
+        }
+        .nav-links a {
+          display: inline;
+          padding: 0;
+          border-top: none;
+        }
+        .centerflex {
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <header>
+        <h1>Aganitha UI Practice</h1>
+        <div>
+          <ol class="breadcrumb"></ol>
+        </div>
+      </header>
+
+      <nav>
+        <div class="nav-inner">
+          <a class="nav-logo" href="/">Learning UI</a>
+
+          <ul class="nav-links" id="nav-links">
+            <li><a href="/solution.html">Home</a></li>
+            <li><a href="/about.html">About</a></li>
+          </ul>
+
+          <button
+            class="nav-toggle"
+            id="nav-toggle"
+            aria-label="Toggle navigation"
+            aria-expanded="false"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="menuicon"
+              id="icon-menu"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="menuicon"
+              id="icon-close"
+              style="display: none"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      <main>
+        <section class="hero">
+          <div class="hero-image-wrap">
+            <img
+              class="hero-img"
+              src="https://picsum.photos/800/400"
+              alt="Beautiful landscape with mountains and lake"
+              decoding="async"
+            />
+            <div class="hero-overlay"></div>
+          </div>
+          <div class="hero-content">
+            <h2>Welcome to Semantic HTML</h2>
+            <p>This demonstrates proper HTML5 semantic structure.</p>
+            <button class="btn-cta" id="theme-toggle">Toggle Dark Mode</button>
+          </div>
+        </section>
+        <article>
+          <h2 id="movies">Top 5 Movies</h2>
+          <p>
+            Here are the list of movies which I had watched — all worth
+            watching. Here are the list of movies which I had watched — all
+            worth watching. Here are the list of movies which I had watched.
+          </p>
+          <ol>
+            <li>The Shawshank Redemption</li>
+            <li>The Godfather</li>
+            <li>The Dark Knight</li>
+            <li>Pulp Fiction</li>
+            <li>Forrest Gump</li>
+          </ol>
+
+          <h2 id="books">Favorite Books</h2>
+          <ul>
+            <li>Rework</li>
+            <li>Harry Potter</li>
+          </ul>
+
+          <p>Use the <code>display: flex</code> property to align items.</p>
+          <pre><code>function greet(name) {
+  return `Hello, ${name}!`;
+}</code></pre>
+
+          <blockquote>
+            <p>"What you seek is seeking you"</p>
+            <cite>— Rumi</cite>
+          </blockquote>
+
+          <h2>Team Members</h2>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Aman</td>
+                <td>aman12@exa.com</td>
+                <td>1234567890</td>
+              </tr>
+              <tr>
+                <td>Hari</td>
+                <td>hari12@exa.com</td>
+                <td>1234567890</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+        <!-- Cards section -->
+        <section>
+          <div class="card-grid">
+            <div class="card card--mono">
+              <h3>Monochrome</h3>
+              <p>Same hue, only lightness shifts.</p>
+            </div>
+            <div class="card card--comp">
+              <h3>Complementary</h3>
+              <p>Opposite hue — 220 + 180°.</p>
+            </div>
+            <div class="card card--triad1">
+              <h3>Triad</h3>
+              <p>120° away on the color wheel.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Icon section -->
+        <section style="padding: var(--space-2)">
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 2rem;
+              margin-bottom: 2rem;
+            "
+          >
+            <!-- Material Symbols -->
+            <span class="material-symbols-outlined">arrow_forward_ios</span>
+            <span class="material-symbols-outlined">check</span>
+
+            <!-- Font Awesome -->
+            <i class="fa-solid fa-angle-up"></i>
+
+            <!-- Heroicons inline SVG -->
+            <svg
+              class="icon-svg"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
+              />
+            </svg>
+          </div>
+
+          <!-- 6-icon grid with hover states -->
+          <div class="icon-grid">
+            <div class="icon-item">
+              <span class="material-symbols-outlined">home</span>
+              <span class="icon-label">Home</span>
+            </div>
+            <div class="icon-item">
+              <span class="material-symbols-outlined">search</span>
+              <span class="icon-label">Search</span>
+            </div>
+            <div class="icon-item">
+              <span class="material-symbols-outlined">favorite</span>
+              <span class="icon-label">Favorite</span>
+            </div>
+            <div class="icon-item">
+              <span class="material-symbols-outlined">notifications</span>
+              <span class="icon-label">Alerts</span>
+            </div>
+            <div class="icon-item">
+              <span class="material-symbols-outlined">person</span>
+              <span class="icon-label">Profile</span>
+            </div>
+
+            <!-- SVG replaces settings font icon -->
+            <div class="icon-item">
+              <svg
+                class="icon-svg"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.869a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                />
+              </svg>
+              <span class="icon-label">Settings</span>
+            </div>
+          </div>
+        </section>
+        <section>
+          <picture>
+            <source
+              type="image/webp"
+              style="max-width: 100%; display: block; height: auto"
+              srcset="/assets/pic1.webp 800w"
+              sizes="
+      (max-width: 480px)  400px,
+      (max-width: 900px)  800px,
+      1200px
+    "
+            />
+            <img
+              style="max-width: 100%; display: block; height: auto"
+              src="https://picsum.photos/1200/800"
+              srcset="
+                https://picsum.photos/400/267   400w,
+                https://picsum.photos/800/534   800w,
+                https://picsum.photos/1200/800 1200w
+              "
+              sizes="(max-width:480px) 400px, (max-width: 900px) 800px, 1200px"
+            />
+          </picture>
+        </section>
+        <section>
+          <!-- GRID PRACTICE  -->
+          <div class="card-grid2">
+            <div class="card2">
+              <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's standard dummy
+                text ever since the 1500s, when an unknown printer took a galley
+                of type and scrambled it to make a type specimen book. It has
+                survived not only five centuries, but also the leap into
+                electronic typesetting, remaining essentially unchanged.
+              </p>
+            </div>
+            <div class="card2 card2-elevated">2</div>
+            <div class="card2 card2--compact">3</div>
+            <div class="card2 card2--outline">4</div>
+          </div>
+        </section>
+      </main>
+
+      <aside>
+        <h3>Quick Links</h3>
+        <div class="centerflex" style="flex-direction: column">
+          <a href="#movies">Movies</a>
+          <a href="#books">Books</a>
+          <a href="#team">Team</a>
+        </div>
+      </aside>
+
+      <footer>
+        <p>&copy; 2026 Semantic HTML Demo. All rights reserved.</p>
+      </footer>
+    </div>
+    <script>
+      const btn = document.getElementById("theme-toggle");
+      btn.addEventListener("click", () => {
+        const html = document.documentElement;
+        html.dataset.theme = html.dataset.theme === "dark" ? "" : "dark";
+      });
+
+      const toggle = document.getElementById("nav-toggle");
+      const links = document.getElementById("nav-links");
+      const iconMenu = document.getElementById("icon-menu");
+      const iconClose = document.getElementById("icon-close");
+
+      toggle.addEventListener("click", () => {
+        const isOpen = links.classList.toggle("open");
+
+        iconMenu.style.display = isOpen ? "none" : "block";
+        iconClose.style.display = isOpen ? "block" : "none";
+
+        toggle.setAttribute("aria-expanded", isOpen);
+      });
+
+      function buildBreadcrumb() {
+        const path = window.location.pathname;
+        const filename = path.split("/").pop();
+
+        const label = filename
+          .replace(".html", "")
+          .replace(/\b\w/g, (c) => c.toUpperCase());
+
+        const html = `
+    <li class="breadcrumb-item">
+      <a href="index.html">Home</a>
+    </li>
+    <li class="breadcrumb-item breadcrumb-item--active" aria-current="page">
+      <a href="/">${label}</a>
+    </li>
+  `;
+
+        document.querySelector(".breadcrumb").innerHTML = html;
+      }
+
+      buildBreadcrumb();
+    </script>
+  </body>
+</html>
