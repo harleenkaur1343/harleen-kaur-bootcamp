@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
-import { log } from "console";
-import { decode } from "punycode";
-import { redirect } from "next/navigation";
 
 const protectedRoutes = ["/tasks", "/profile", "/settings"];
 const authRoutes = ["/login", "/register"];
@@ -10,7 +7,6 @@ const authRoutes = ["/login", "/register"];
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const token = request.cookies.get("auth-token");
-
 
   const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
@@ -23,7 +19,6 @@ export async function middleware(request: NextRequest) {
   if (token) {
     try {
       isValidToken = await hasValidTokenAsync(token, JWT_SECRET);
-     
     } catch (error) {
       console.log("Middleware error", error);
       const response = NextResponse.redirect(new URL("/login", request.url));
@@ -34,7 +29,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isProtectedRoute && !isValidToken) {
-     return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
   if (isAuthRoute && isValidToken) {
@@ -61,5 +56,5 @@ async function hasValidTokenAsync(
 }
 
 export const config = {
-  matcher: [ '/((?!api|_next/static|_next/image|favicon.ico).*)',],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

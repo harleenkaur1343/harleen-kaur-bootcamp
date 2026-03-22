@@ -47,7 +47,7 @@ async function apiRequest<T>(
       throw error;
     }
     const data = await response.json()
-    console.log("THE GLOBAL RESPONSE", data);
+    //console.log("THE GLOBAL RESPONSE", data);
     return data;
   } catch (error) {
     console.error("API Request failed:", error);

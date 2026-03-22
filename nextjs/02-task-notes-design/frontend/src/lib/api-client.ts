@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import type { Task } from "@/types/task";
+import type { Task, TaskFilters } from "@/types/task";
 
 export interface TaskWrapper {
   data: Task[];
@@ -37,20 +37,40 @@ async function authenticatedRequest<T>(
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw { 
-      status: response.status, 
-      message: errorText || `API Error: ${response.statusText}` 
+    throw {
+      status: response.status,
+      message: errorText || `API Error: ${response.statusText}`,
     } as ApiError;
   }
 
   return response.json();
 }
+function addIfDefined(
+  params: URLSearchParams,
+  key: string,
+  value: string | undefined,
+) {
+  if (value) params.append(key, value);
+}
 
 export const apiClient = {
   // Authenticated endpoints
-  getTasks: () => authenticatedRequest<TaskWrapper>("/tasks"),
+  getTasks: (data: TaskFilters) => {
+    const params = new URLSearchParams({
+      page: (data.page ?? 1).toString(),
+      limit: (data.limit ?? 10).toString(),
+    });
+
+    addIfDefined(params, "search", data.search);
+    addIfDefined(params, "priority", data.priority);
+    addIfDefined(params, "completed", data.completed?.toString());
+
+    return authenticatedRequest<TaskWrapper>(`/tasks?${params}`);
+  },
   getTask: (id: string) => authenticatedRequest<Task>(`/tasks/${id}`),
-  createTask: (task: Omit<Task, "id" | "created_at" | "updated_at" | "user_id">) =>
+  createTask: (
+    task: Omit<Task, "id" | "created_at" | "updated_at" | "user_id">,
+  ) =>
     authenticatedRequest<Task>("/tasks", {
       method: "POST",
       body: JSON.stringify(task),

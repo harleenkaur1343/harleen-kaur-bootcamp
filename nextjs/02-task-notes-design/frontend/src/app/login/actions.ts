@@ -25,7 +25,7 @@ export async function login(prevState: { error: string } | null, formData: FormD
     const response : Response = await api.login({ email, password }) as Response;
 
     // Store token in HTTP-only cookie
-    console.log("Action login response token", response.token);
+    //console.log("Action login response token", response.token);
     cookie.set("auth-token", response.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

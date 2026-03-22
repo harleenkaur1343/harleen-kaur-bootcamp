@@ -1,26 +1,27 @@
 import { Request, Response, NextFunction } from "express";
 import { createTaskSchema, updateTaskSchema } from "../schemas/taskSchemas.js";
-import { Task } from "../types/tasks.js";
+import { Task } from "../types/task.js";
 import crypto from "crypto";
+//import { tasks } from "../types/task.js";
 import * as dbOps from "../services/tasksService.js";
-
+import { Priority } from "../types/task.js";
 export async function createTask(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const data: any = createTaskSchema.parse(req.body);
-    // console.log("task data", data, req.user._id)
+    const data = createTaskSchema.parse(req.body);
+
     const task: Task = {
       id: crypto.randomUUID(),
       title: data.title,
       description: data.description,
       completed: data.completed ?? false,
       priority: data.priority ?? "medium",
-      created_at: new Date(),
-      updated_at: new Date(),
-      user_id: req.user!._id,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      userId: Number(req.user!._id),
     };
 
     const created = await dbOps.createTask(task);
@@ -38,48 +39,40 @@ export async function listTasks(
 ) {
   //let result = [...tasks]
   try {
+    let result = await dbOps.getTasks(req.user);
+    const { page = "1", limit = "10", completed, sort } = req.query;
 
-    const {
-      completed,
-      search,
-      priority,
-      page = "1",
-      limit = "10",
-      sort,
-    } = req.query;
+    if (completed !== undefined) {
+      result = result.filter((t) => t.completed === (completed === "true"));
+    }
 
-       //create the filters to be passed to the getTasks
-    //completed === "true" to handle both the cases
-    const filters = {
-      curruser: req.user!,
-      page: Number(page),
-      limit: Number(limit),
-      completed: completed !== undefined ? completed === "true" : undefined,
-      sort: sort === "created_at" ? completed === "true" : undefined,
-      search: search ? String(search) : undefined,
-      priority: priority ? String(priority) : undefined,
-    };
-    console.log("FIlters",filters);
-    const result = await dbOps.getTasks(filters);
+    if (sort === "createdAt") {
+      result.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+    }
 
-    // const p = Number(page)
-    // const l = Number(limit)
+    const p = Number(page);
+    const l = Number(limit);
 
-    // const start = (p - 1) * l
-    // const end = start + l
+    const start = (p - 1) * l;
+    const end = start + l;
 
-    // const paginated = result.slice(start, end)
+    const paginated = result.slice(start, end);
 
-    res.json({ data: result });
+    res.json({
+      data: result,
+      meta: {
+        page: p,
+        limit: l,
+        total: result.length,
+      },
+    });
   } catch (err) {
     next(err);
   }
 }
 
 export async function getTask(req: Request, res: Response, next: NextFunction) {
-  const task = await dbOps.getTaskById(
-    Array.isArray(req.params.id) ? req.params.id[0] : req.params.id,
-  );
+  const task = await dbOps.getTaskById(req.params.id as string);
 
   if (!task) {
     return next({
@@ -100,10 +93,7 @@ export async function updateTask(
   try {
     const data = updateTaskSchema.parse(req.body);
 
-    const task = await dbOps.updateTask(
-      Array.isArray(req.params.id) ? req.params.id[0] : req.params.id,
-      data,
-    );
+    const task = await dbOps.updateTask(req.params.id as string, data);
     if (!task) {
       return next({
         status: 404,
@@ -126,11 +116,9 @@ export async function deleteTask(
   next: NextFunction,
 ) {
   try {
-    await dbOps.deleteTask(
-      Array.isArray(req.params.id) ? req.params.id[0] : req.params.id,
-    );
+    await dbOps.deleteTask(req.params.id as string);
 
-    res.status(200).json({ success: true });
+    res.status(204).send();
   } catch (err) {
     next(err);
   }
