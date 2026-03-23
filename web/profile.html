@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Profile Loader v2</title>
+    <style>
+      body {
+        font-family: Arial;
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #f9f9f9;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        padding: 12px 24px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      #output {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background: white;
+        min-height: 100px;
+      }
+      img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
+      .profile-info h2 {
+        margin: 0 0 10px 0;
+        color: #333;
+      }
+      .profile-info p {
+        margin: 5px 0;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Profile Loader Test</h1>
+    <button id="loadBtn">Load Profile</button>
+    <div id="output">Click to load profile data...</div>
+    <br />
+    <button id="clearBtn">Clear Profile</button>
+
+    <script>
+      console.log("Profile page loaded");
+
+      document.getElementById("loadBtn").addEventListener("click", async () => {
+        console.log("Button clicked");
+
+        const btn = document.getElementById("loadBtn");
+        btn.textContent = "Loading...";
+        btn.disabled = true;
+
+        try {
+          // API call
+          console.log("Fetching /api/profile...");
+          const response = await fetch("/api/profile");
+          const profile = await response.json();
+          console.log("Profile:", profile);
+
+          // DOM update
+          document.getElementById("output").innerHTML = `
+          <div style="text-align: center;">
+            <img src="${profile.avatar}" alt="Avatar">
+            <div class="profile-info">
+              <h2>${profile.name}</h2>
+              <p><strong>Email:</strong> ${profile.email}</p>
+            </div>
+          </div>
+        `;
+
+          // localStorage
+          localStorage.setItem("lastProfileFetch", new Date().toISOString());
+          console.log("localStorage updated");
+        } catch (error) {
+          console.error("Error:", error);
+          document.getElementById("output").innerHTML =
+            '<p style="color: red;">Failed to load profile!</p>';
+        } finally {
+          btn.textContent = "Load Profile";
+          btn.disabled = false;
+        }
+      });
+
+      document
+        .getElementById("clearBtn")
+        .addEventListener("click", async () => {
+          console.log("Clear Button clicked");
+
+          const btn = document.getElementById("clearBtn");
+          btn.textContent = "Loading...";
+          btn.disabled = true;
+
+          try {
+            // DOM update
+            document.getElementById("output").innerHTML = `
+          <div style="text-align: center;">
+              <p>Click to load profile data...</p>
+          </div>
+        `;
+
+            localStorage.removeItem("lastProfileFetch");
+
+            console.log("localStorage updated");
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("output").innerHTML =
+              '<p style="color: red;">Failed to load profile!</p>';
+          } finally {
+            btn.textContent = "Clear Profile";
+            btn.disabled = false;
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -42,3 +42,15 @@ Record original URL, final URL, and redirect status codes.
 - Final URL - https://www.iana.org/help/example-domains
 
 
+## HTTP in Practice
+
+Why can curl succeed while browser fetch fails?
+- Curl has no CORS restriction 
+- In case the fetch misses sending cookies 
+  
+When do cookies appear under Application but not in JavaScript?
+- Cookies are HTTPOnly, so that Js cannnot read auth cookies
+
+How do you prove whether the bug is in client mapping vs server response?
+- If 
+
