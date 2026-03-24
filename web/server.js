@@ -7,6 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+app.use(express.json()); 
 
 app.use(express.static(__dirname));
 app.use((req, res, next) => {
@@ -47,6 +48,10 @@ app.get("/api/profile", (req, res) => {
 app.get("/old-home", (req, res) => {
   res.redirect(302, "/");
 });
+app.post('/data', (req, res) => {
+  console.log(req.body); 
+  res.json({ received: req.body });
+});
 
 app.get("/api/time", (req, res) => {
   console.log("Fail", req.query.fail);
@@ -56,6 +61,15 @@ app.get("/api/time", (req, res) => {
   }
   res.json({ ok: true, time: new Date().toISOString() });
 });
+
+app.get("/set-cookie",(req,res)=>{
+  res.cookie('theme2','dark',{
+    maxAge:100000,
+    httpOnly:true,
+    Path:"/"
+  })
+  res.send("Set cookie");
+})
 
 app.get("*slach", (req, res) => {
   res.status(404).send(`<body><h2>This page was not found</h2></body>`);

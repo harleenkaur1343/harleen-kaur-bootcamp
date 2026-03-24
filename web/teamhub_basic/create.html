@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project CSR</title>
+  </head>
+  <body>
+    <h1>Projects (CSR)</h1>
+    <div id="project-list">Loading...</div>
+
+    <script>
+      const prjtlist = document.getElementById("project-list");
+      async function loadProjects() {
+        //.join('') - takes that array and merges all elements into ONE string
+        try {
+          const res = await fetch("/api/projects");
+          const data = await res.json();
+          prjtlist.innerHTML = data.map((p)=>`<div><h3>${p.name}</h3> <p style="color='teal'">Status: ${p.status}</p></div>`).join('');
+        } catch (error) {
+          prjtlist.textContent = "Failed to load the projects"
+        }
+      }
+
+      loadProjects();
+    </script>
+  </body>
+</html>
