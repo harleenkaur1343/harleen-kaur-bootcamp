@@ -10,7 +10,8 @@ export default function TaskClient({ alltasks }: { alltasks: Task[] }) {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [loading, setLoading] = useState(false);
-  const [tasks, setTasks] = useState<Task[]>(alltasks);
+  const [tasks, setTasks] = useState<Task[]>(alltasks ?? []);
+  console.log("Task length", alltasks.length);
 
   // useEffect(() => {
   //   const timer = setTimeout(() => {
@@ -42,13 +43,14 @@ export default function TaskClient({ alltasks }: { alltasks: Task[] }) {
     <div className="container mx-auto p-8 max-w-6xl">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
-        <Input
+        <h2 className="text-2xl font-bold">My Tasks</h2>
+        {/* <Input
           value={search}
           placeholder="Search tasks..."
           style={{ width: "50vw" }}
           className="h-9 bg-white/80"
           onChange={(e) => setSearch(e.target.value)}
-        />
+        /> */}
         <Link href="/tasks/new">
           <Button className="bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
             + Add New Task
